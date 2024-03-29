@@ -8,6 +8,8 @@ urlpatterns = [
    # base_views.py
     path('',
          base_views.index, name='index'),
+     path('my_page/', base_views.my_page, name='my_page'),
+
     path('<int:question_id>/',
          base_views.detail, name='detail'),
 

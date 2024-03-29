@@ -1,0 +1,23 @@
+<!-- my_page.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h2>마이페이지</h2>
+        <p>사용자 정보:</p>
+        <p>이름: {{ user.username }}</p>
+        <p>이메일: {{ user.email }}</p>
+        <!-- 기타 사용자 정보 필드들을 추가로 출력할 수 있음 -->
+        <h3>좋아요한 게시글 목록</h3>
+        {% if liked_questions %}
+            <ul>
+                {% for question in liked_questions %}
+                    <li><a href="{% url 'pybo:detail' question.id %}">{{ question.subject }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>좋아요한 게시글이 없습니다.</p>
+        {% endif %}
+    </div>
+{% endblock %}

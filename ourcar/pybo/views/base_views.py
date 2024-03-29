@@ -1,8 +1,8 @@
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
-
-from ..models import Question
+from django.contrib.auth.decorators import login_required
+from ..models import Question, Like
 
 # 메인 질문 리스트 + 페이지네이션
 def index(request):
@@ -29,3 +29,10 @@ def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     context = {'question': question}
     return render(request, 'pybo/question_detail.html', context)
+
+@login_required(login_url='common:login')
+def my_page(request):
+    user = request.user
+    liked_questions = Question.objects.filter(voter=user)
+    return render(request, 'pybo/my_page.html', {'liked_questions': liked_questions})    
+    # return render(request, 'pybo/my_page.html')

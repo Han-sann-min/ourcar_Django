@@ -22,3 +22,10 @@ class Answer(models.Model):
     modify_date = models.DateTimeField(null=True, blank=True)
     create_date = models.DateTimeField()
     voter = models.ManyToManyField(User, related_name='voter_answer')
+    
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user.username} likes {self.question.subject}'
