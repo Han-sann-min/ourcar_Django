@@ -1,0 +1,7 @@
+.test2 {
+    position: fixed; /* 고정 위치 설정 */
+    top: 0; /* 화면 상단에 고정 */
+    width: 100%; /* 너비 100%로 설정 */
+    z-index: 1000; /* 다른 요소들보다 위에 표시됨 */
+    color: yellow;
+}
