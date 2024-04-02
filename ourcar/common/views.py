@@ -1,10 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
 from django.shortcuts import render, redirect
-from common.forms import UserForm
-
-
+from common.forms import CustomUserForm  # CustomUserForm을 사용하기 위해 import
 
 def logout_view(request):
     logout(request)
@@ -12,14 +9,14 @@ def logout_view(request):
 
 def signup(request):
     if request.method == "POST":
-        form = UserForm(request.POST)
+        form = CustomUserForm(request.POST)  # CustomUserForm 사용
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)  # 사용자 인증
-            login(request, user)  # 로그인
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
             return redirect('index')
     else:
-        form = UserForm()
+        form = CustomUserForm()  # CustomUserForm 사용
     return render(request, 'common/signup.html', {'form': form})

@@ -1,23 +1,82 @@
-<!-- my_page.html -->
-
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container">
-        <h2>마이페이지</h2>
-        <p>사용자 정보:</p>
-        <p>이름: {{ user.username }}</p>
-        <p>이메일: {{ user.email }}</p>
-        <!-- 기타 사용자 정보 필드들을 추가로 출력할 수 있음 -->
-        <h3>좋아요한 게시글 목록</h3>
-        {% if liked_questions %}
-            <ul>
-                {% for question in liked_questions %}
-                    <li><a href="{% url 'pybo:detail' question.id %}">{{ question.subject }}</a></li>
+<div class="container-fluid my-3 px-5">
+    <div class="row">
+        <!-- 왼쪽 열: 사용자 정보 -->
+        <div class="col-md-2" style="background-color:skyblue;">
+            <div class="text-center ">
+                <h3>사용자 정보</h3>
+                <!-- 사용자가 선택한 이미지 or 디폴트 이미지 -->
+
+                <img src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}/static/uploads/user_default.png{% endif %}" alt="프로필 이미지" class="rounded-circle mb-3" style="width: 100%; max-width: 200px;">
+                <p><strong>이름:</strong> {{ user.username }}</p>
+                <p><strong>이메일:</strong> {{ user.email }}</p>
+                <p><strong>전화번호:</strong> {{ user.phone_number }}</p>
+                <!-- 기타 사용자 정보 필드들을 추가로 출력할 수 있음 -->
+            </div>
+        </div>
+
+        <!-- 오른쪽 열: 좋아요한 게시글 목록 -->
+        <div class="col-md-9">
+            <div class="liked-posts ">
+                <h3>좋아요한 게시글 목록</h3>
+                {% if liked_questions %}
+                <div class="row">
+                    {% for question in liked_questions %}
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <img src="/static/uploads/sampleCAR.jpg" class="card-img-top" alt="대표 사진">
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="{% url 'pybo:detail' question.id %}">{{ question.subject }}</a></h5>
+                                <p class="card-text">글쓴이: {{ question.author.username }}</p>
+                                <p class="card-text">작성일시: {{ question.create_date|date:"Y년 m월 d일" }}</p>
+                                <span class="badge bg-danger">{{ question.answer_set.count }} 답변</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% if forloop.counter|divisibleby:4 %}
+                        </div><div class="row">
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p>좋아요한 게시글이 없습니다.</p>
+                {% endif %}
+            </div>
+            <!-- 페이징처리 -->
+            {% if liked_questions.has_other_pages %}
+            <ul class="pagination justify-content-center mt-4">
+                {% if liked_questions.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo;</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo;</span>
+                </li>
+                {% endif %}
+                {% for num in liked_questions.paginator.page_range %}
+                {% if liked_questions.number == num %}
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">{{ num }}<span class="sr-only"></span></span>
+                </li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
                 {% endfor %}
+                {% if liked_questions.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ liked_questions.paginator.num_pages }}">&raquo;</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&raquo;</span>
+                </li>
+                {% endif %}
             </ul>
-        {% else %}
-            <p>좋아요한 게시글이 없습니다.</p>
-        {% endif %}
+            {% endif %}
+        </div>
     </div>
+</div>
 {% endblock %}

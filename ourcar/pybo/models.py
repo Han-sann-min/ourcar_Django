@@ -1,14 +1,14 @@
 from django.db import models
-from django.contrib.auth.models import User
+from common.models import CustomUser
 
 
 class Question(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author_question')
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='author_question')
     subject = models.CharField(max_length=200)
     content = models.TextField()
     modify_date = models.DateTimeField(null=True, blank=True)
     create_date = models.DateTimeField()
-    voter = models.ManyToManyField(User, related_name='voter_question')  # 추천인 추가
+    voter = models.ManyToManyField(CustomUser, related_name='voter_question')  # 추천인 추가
     
     def __str__(self):
         return self.subject
@@ -16,16 +16,10 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author_answer')
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='author_answer')
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     content = models.TextField()
     modify_date = models.DateTimeField(null=True, blank=True)
     create_date = models.DateTimeField()
-    voter = models.ManyToManyField(User, related_name='voter_answer')
+    voter = models.ManyToManyField(CustomUser, related_name='voter_answer')
     
-class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'{self.user.username} likes {self.question.subject}'
