@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from ..models import Question
-
+from common.models import TestSangmin
 # 메인 질문 리스트 + 페이지네이션
 def index(request):
     page = request.GET.get('page', '1')  # 페이지
@@ -33,6 +33,15 @@ def detail(request, question_id):
 @login_required(login_url='common:login')
 def my_page(request):
     user = request.user
+    
+    # 사용자에게 연결된 test_sangmin 객체 가져오기
+    try:
+        test_sangmin_instance = TestSangmin.objects.get(id=user.id)
+    except TestSangmin.DoesNotExist:
+        test_sangmin_instance = None
+        
+    # test_sangmin_instance = TestSangmin.objects.filter(id=user)
+        
     liked_questions = Question.objects.filter(voter=user)
     
     # 페이지네이션 추가
@@ -40,6 +49,6 @@ def my_page(request):
     paginator = Paginator(liked_questions, 12)  # 페이지당 12개씩 보여주기
     page_obj = paginator.get_page(page)
     
-    return render(request, 'pybo/my_page.html', {'liked_questions': page_obj})
+    return render(request, 'pybo/my_page.html', {'liked_questions': page_obj, 'test_sangmin_instance': test_sangmin_instance})
 
     # return render(request, 'pybo/my_page.html')
