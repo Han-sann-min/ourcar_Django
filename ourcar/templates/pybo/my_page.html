@@ -21,34 +21,34 @@
                 {% if test_sangmin_instance %}
                     <p><strong>SEQ:</strong> {{ test_sangmin_instance.seq }}</p>
                     {% if test_sangmin_instance.interior_am %}
-                        <p><strong>Interior AM:</strong> {{ test_sangmin_instance.interior_am }}</p>
+                        <p><strong>가전/가구/주방용품 :</strong> {{ test_sangmin_instance.interior_am }}</p>
                     {% endif %}
                     {% if test_sangmin_instance.insuhos_am %}
-                        <p><strong>Insuhos AM:</strong> {{ test_sangmin_instance.insuhos_am }}</p>
+                        <p><strong>보험/병원 :</strong> {{ test_sangmin_instance.insuhos_am }}</p>
                     {% endif %}
                     {% if test_sangmin_instance.offedu_am %}
-                        <p><strong>Offedu AM:</strong> {{ test_sangmin_instance.offedu_am }}</p>
+                        <p><strong>사무통신/서적/학원 :</strong> {{ test_sangmin_instance.offedu_am }}</p>
                     {% endif %}
                     {% if test_sangmin_instance.trvlec_am %}
-                        <p><strong>Trvlec AM:</strong> {{ test_sangmin_instance.trvlec_am }}</p>
+                        <p><strong>여행/레져/문화 :</strong> {{ test_sangmin_instance.trvlec_am }}</p>
                     {% endif %}
                     {% if test_sangmin_instance.fsbz_am %}
-                        <p><strong>Fsbz AM:</strong> {{ test_sangmin_instance.fsbz_am }}</p>
+                        <p><strong>요식업 :</strong> {{ test_sangmin_instance.fsbz_am }}</p>
                     {% endif %}
                     {% if test_sangmin_instance.svcarc_am %}
-                        <p><strong>Svcarc AM:</strong> {{ test_sangmin_instance.svcarc_am }}</p>
+                        <p><strong>용역/수리/건축자재 :</strong> {{ test_sangmin_instance.svcarc_am }}</p>
                     {% endif %}
                     {% if test_sangmin_instance.dist_am %}
-                        <p><strong>Dist AM:</strong> {{ test_sangmin_instance.dist_am }}</p>
+                        <p><strong>유통 :</strong> {{ test_sangmin_instance.dist_am }}</p>
                     {% endif %}
                     {% if test_sangmin_instance.plsanit_am %}
-                        <p><strong>Plsanit AM:</strong> {{ test_sangmin_instance.plsanit_am }}</p>
+                        <p><strong>보건위생 :</strong> {{ test_sangmin_instance.plsanit_am }}</p>
                     {% endif %}
                     {% if test_sangmin_instance.clothgds_am %}
-                        <p><strong>Clothgds AM:</strong> {{ test_sangmin_instance.clothgds_am }}</p>
+                        <p><strong>의류/신변잡화 :</strong> {{ test_sangmin_instance.clothgds_am }}</p>
                     {% endif %}
                     {% if test_sangmin_instance.auto_am %}
-                        <p><strong>Auto AM:</strong> {{ test_sangmin_instance.auto_am }}</p>
+                        <p><strong>자동차/연료/정비 :</strong> {{ test_sangmin_instance.auto_am }}</p>
                     {% endif %}
                     {% if test_sangmin_instance.car_price %}
                         <p><strong>Car Price:</strong> {{ test_sangmin_instance.car_price }}</p>
@@ -63,14 +63,12 @@
         <!-- 오른쪽 열: 좋아요한 게시글 목록 -->
         
         <div class="col-md-9">
-            <div class="tab">
-                <button class="tablinks active" onclick="openCity(event, 'London')" id="defaultOpen">관심있는 차량</button>
+            <div class="tab" style="display: flex; justify-content: flex-end;">
                 <button class="tablinks" onclick="openCity(event, 'Paris')">나의 소비 내역</button>
+                <button class="tablinks active" onclick="openCity(event, 'London')" id="defaultOpen">관심있는 차량</button>
             </div>
-            
             <div id="London" class="tabcontent">
                 <div class="liked-posts ">
-                    <h3>좋아요한 게시글 목록</h3>
                     {% if liked_questions %}
                     <div class="row">
                         {% for question in liked_questions %}
@@ -140,25 +138,37 @@
                     var myChart = new Chart(ctx, {
                         type: 'pie',
                         data: {
-                            labels: ['Interior AM', 'Insuhos AM', 'Offedu AM', 'Trvlec AM', 'Fsbz AM', 'Svcarc AM', 'Dist AM', 'Plsanit AM', 'Clothgds AM', 'Auto AM', 'Car Price'],
+                            labels: [
+                            {% if test_sangmin_instance %}
+                                {% if test_sangmin_instance.interior_am > 0 %}'가전/가구/주방용품',{% endif %}
+                                {% if test_sangmin_instance.insuhos_am > 0 %}'보험/병원',{% endif %}
+                                {% if test_sangmin_instance.offedu_am > 0 %}'사무통신/서적/학원',{% endif %}
+                                {% if test_sangmin_instance.trvlec_am > 0 %}'여행/레져/문화',{% endif %}
+                                {% if test_sangmin_instance.fsbz_am > 0 %}'요식업',{% endif %}
+                                {% if test_sangmin_instance.svcarc_am > 0 %}'용역/수리/건축자재',{% endif %}
+                                {% if test_sangmin_instance.dist_am > 0 %}'유통',{% endif %}
+                                {% if test_sangmin_instance.plsanit_am > 0 %}'보건위생',{% endif %}
+                                {% if test_sangmin_instance.clothgds_am > 0 %}'의류/신변잡화',{% endif %}
+                                {% if test_sangmin_instance.auto_am > 0 %}'자동차/연료/정비',{% endif %}
+                        {% endif %}
+                        ],
                             datasets: [{
                                 label: 'TestSangmin 정보',
                                 data: [
                                     {% if test_sangmin_instance %}
-                                        {% if test_sangmin_instance.interior_am %} {{ test_sangmin_instance.interior_am }}, {% else %} 0, {% endif %}
-                                        {% if test_sangmin_instance.insuhos_am %} {{ test_sangmin_instance.insuhos_am }}, {% else %} 0, {% endif %}
-                                        {% if test_sangmin_instance.offedu_am %} {{ test_sangmin_instance.offedu_am }}, {% else %} 0, {% endif %}
-                                        {% if test_sangmin_instance.trvlec_am %} {{ test_sangmin_instance.trvlec_am }}, {% else %} 0, {% endif %}
-                                        {% if test_sangmin_instance.fsbz_am %} {{ test_sangmin_instance.fsbz_am }}, {% else %} 0, {% endif %}
-                                        {% if test_sangmin_instance.svcarc_am %} {{ test_sangmin_instance.svcarc_am }}, {% else %} 0, {% endif %}
-                                        {% if test_sangmin_instance.dist_am %} {{ test_sangmin_instance.dist_am }}, {% else %} 0, {% endif %}
-                                        {% if test_sangmin_instance.plsanit_am %} {{ test_sangmin_instance.plsanit_am }}, {% else %} 0, {% endif %}
-                                        {% if test_sangmin_instance.clothgds_am %} {{ test_sangmin_instance.clothgds_am }}, {% else %} 0, {% endif %}
-                                        {% if test_sangmin_instance.auto_am %} {{ test_sangmin_instance.auto_am }}, {% else %} 0, {% endif %}
-                                        {% if test_sangmin_instance.car_price %} {{ test_sangmin_instance.car_price }} {% else %} 0 {% endif %}
-                                    {% else %}
-                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                                    {% endif %}
+                                        {% if test_sangmin_instance.interior_am > 0 %} {{ test_sangmin_instance.interior_am }}, {% endif %}
+                                        {% if test_sangmin_instance.insuhos_am > 0 %} {{ test_sangmin_instance.insuhos_am }}, {% endif %}
+                                        {% if test_sangmin_instance.offedu_am > 0 %} {{ test_sangmin_instance.offedu_am }}, {% endif %}
+                                        {% if test_sangmin_instance.trvlec_am > 0 %} {{ test_sangmin_instance.trvlec_am }}, {% endif %}
+                                        {% if test_sangmin_instance.fsbz_am > 0 %} {{ test_sangmin_instance.fsbz_am }}, {% endif %}
+                                        {% if test_sangmin_instance.svcarc_am > 0 %} {{ test_sangmin_instance.svcarc_am }}, {% endif %}
+                                        {% if test_sangmin_instance.dist_am > 0 %} {{ test_sangmin_instance.dist_am }}, {% endif %}
+                                        {% if test_sangmin_instance.plsanit_am > 0 %} {{ test_sangmin_instance.plsanit_am }}, {% endif %}
+                                        {% if test_sangmin_instance.clothgds_am > 0 %} {{ test_sangmin_instance.clothgds_am }}, {% endif %}
+                                        {% if test_sangmin_instance.auto_am > 0 %} {{ test_sangmin_instance.auto_am }}, {% endif %}
+                                {% else %}
+                                    0
+                                {% endif %}
                                 ],
                                 backgroundColor: [
                                     'rgba(255, 99, 132, 0.2)',

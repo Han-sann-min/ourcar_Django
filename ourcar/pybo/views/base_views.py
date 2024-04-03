@@ -46,7 +46,7 @@ def my_page(request):
     
     # 페이지네이션 추가
     page = request.GET.get('page', 1)  # 현재 페이지 번호
-    paginator = Paginator(liked_questions, 12)  # 페이지당 12개씩 보여주기
+    paginator = Paginator(liked_questions, 8)  # 페이지당 12개씩 보여주기
     page_obj = paginator.get_page(page)
     
     return render(request, 'pybo/my_page.html', {'liked_questions': page_obj, 'test_sangmin_instance': test_sangmin_instance})
