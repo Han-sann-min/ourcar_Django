@@ -10,6 +10,11 @@
                 <!-- 사용자가 선택한 이미지 or 디폴트 이미지 -->
 
                 <img src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}/static/uploads/user_default.png{% endif %}" alt="프로필 이미지" class="rounded-circle mb-3" style="width: 100%; max-width: 200px;">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ profile_image_form.as_p }}
+                    <button type="submit">프로필 이미지 업로드</button>
+                </form>
                 <p><strong>이름:</strong> {{ user.username }}</p>
                 <p><strong>이메일:</strong> {{ user.email }}</p>
                 <p><strong>전화번호:</strong> {{ user.phone_number }}</p>

@@ -1,5 +1,6 @@
 from django import forms
 from pybo.models import Question, Answer
+from common.models import CustomUser
 
 
 class QuestionForm(forms.ModelForm):
@@ -22,3 +23,8 @@ class AnswerForm(forms.ModelForm):
         labels = {
             'content': '답변내용',
         }
+        
+class ProfileImageForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['profile_image']
