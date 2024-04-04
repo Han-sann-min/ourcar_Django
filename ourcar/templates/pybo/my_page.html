@@ -13,7 +13,8 @@
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ profile_image_form.as_p }}
-                    <button type="submit">프로필 이미지 업로드</button>
+                    <input type="file" name="profile_image"> <!-- 파일 업로드 필드 -->
+                    <button type="submit" class="btn btn-primary">업로드</button>
                 </form>
                 <p><strong>이름:</strong> {{ user.username }}</p>
                 <p><strong>이메일:</strong> {{ user.email }}</p>
