@@ -32,8 +32,5 @@ urlpatterns = [
     path('answer/vote/<int:answer_id>/', 
          answer_views.answer_vote, name='answer_vote'),
 
-
-    path('upload-profile-image/', base_views.upload_profile_image, name='upload_profile_image'),
-
     
 ]   

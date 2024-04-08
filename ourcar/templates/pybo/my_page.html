@@ -8,11 +8,9 @@
             <div class="text-center ">
                 <h3>사용자 정보</h3>
                 <!-- 사용자가 선택한 이미지 or 디폴트 이미지 -->
-
                 <img src="{% if user.profile_image %}{{ user.profile_image.url }}{% else %}/static/uploads/user_default.png{% endif %}" alt="프로필 이미지" class="rounded-circle mb-3" style="width: 100%; max-width: 200px;">
-                <form method="post" enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ profile_image_form.as_p }}
                     <input type="file" name="profile_image"> <!-- 파일 업로드 필드 -->
                     <button type="submit" class="btn btn-primary">업로드</button>
                 </form>

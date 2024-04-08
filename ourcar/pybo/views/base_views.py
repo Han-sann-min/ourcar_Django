@@ -1,6 +1,8 @@
+# pybo/views/base_views.py
+
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from ..models import Question
 from common.models import TestSangmin
@@ -42,9 +44,6 @@ def my_page(request):
     except TestSangmin.DoesNotExist:
         test_sangmin_instance = None
         
-    # 사용자의 프로필 이미지를 가져옵니다.
-    profile_image = user.profile_image
-    
     liked_questions = Question.objects.filter(voter=user)
     
     # 페이지네이션 추가
@@ -52,17 +51,29 @@ def my_page(request):
     paginator = Paginator(liked_questions, 8)  # 페이지당 12개씩 보여주기
     page_obj = paginator.get_page(page)
     
-    return render(request, 'pybo/my_page.html', {'liked_questions': page_obj, 'test_sangmin_instance': test_sangmin_instance, 'profile_image': profile_image})
-
-    # return render(request, 'pybo/my_page.html')
-    
-@login_required(login_url='common:login')
-def upload_profile_image(request):
+    # 사용자의 프로필 이미지를 가져옵니다.
+    profile_image = user.profile_image
     if request.method == 'POST':
+        print("post----------------------")
         form = ProfileImageForm(request.POST, request.FILES, instance=request.user)
+        print(request.FILES)
         if form.is_valid():
             form.save()
-            return render(request, 'my_page')  # Render the user's profile page
+            return render(request, 'pybo/my_page.html', {'liked_questions': page_obj, 'test_sangmin_instance': test_sangmin_instance, 'profile_image': profile_image, 'profile_image_form': form})  # Render the user's profile page
+            # return redirect("/")  # Render the user's profile page
     else:
         form = ProfileImageForm(instance=request.user)
-    return render(request, 'pybo/upload_profile_image.html', {'profile_image_form': form})
+        print("get----------------------")
+
+    return render(request, 'pybo/my_page.html', {'liked_questions': page_obj, 'test_sangmin_instance': test_sangmin_instance, 'profile_image': profile_image, 'profile_image_form': form})
+    
+# @login_required(login_url='common:login')
+# def upload_profile_image(request):
+#     if request.method == 'POST':
+#         form = ProfileImageForm(request.POST, request.FILES, instance=request.user)
+#         if form.is_valid():
+#             form.save()
+#             return render(request, 'my_page')  # Render the user's profile page
+#     else:
+#         form = ProfileImageForm(instance=request.user)
+#     return render(request, 'pybo/upload_profile_image.html', {'profile_image_form': form})
